@@ -10,4 +10,4 @@
 ;;; License: GPLv3
 
 (configuration-layer/declare-layers '(json node prettier web-beautify))
-(configuration-layer/declare-shadow-relation  'js 'javascript)
+;;(configuration-layer/declare-shadow-relation  'js 'javascript)

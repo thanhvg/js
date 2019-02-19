@@ -9,7 +9,7 @@
 ;;
 ;;; License: GPLv3
 
-(setq js-packages
+(setq javascript-packages
       '(
         add-node-modules-path
         company
@@ -27,44 +27,44 @@
         web-beautify
         ))
 
-(defun js/post-init-add-node-modules-path ()
+(defun javascript/post-init-add-node-modules-path ()
   (spacemacs/add-to-hooks #'add-node-modules-path '(css-mode-hook
                                              js2-mode-hook)))
 
-(defun js/post-init-evil-matchit ()
+(defun javascript/post-init-evil-matchit ()
   (add-hook `js2-mode-hook `turn-on-evil-matchit-mode))
 
-(defun js/post-init-company ()
-  (add-hook 'js2-mode-local-vars-hook #'spacemacs//js-setup-company))
+(defun javascript/post-init-company ()
+  (add-hook 'js2-mode-local-vars-hook #'spacemacs//javascript-setup-company))
 
-(defun js/post-init-flycheck ()
+(defun javascript/post-init-flycheck ()
   (spacemacs/enable-flycheck 'js2-mode))
 
-(defun js/post-init-imenu ()
+(defun javascript/post-init-imenu ()
   ;; Required to make imenu functions work correctly
   (add-hook 'js2-mode-hook 'js2-imenu-extras-mode))
 
-(defun js/post-init-impatient-mode ()
+(defun javascript/post-init-impatient-mode ()
   (spacemacs/set-leader-keys-for-major-mode 'js2-mode
     "i" 'spacemacs/impatient-mode))
 
-(defun js/pre-init-org ()
+(defun javascript/pre-init-org ()
   (spacemacs|use-package-add-hook org
     :post-config (add-to-list 'org-babel-load-languages '(js . t))))
 
-(defun js/init-js-doc ()
+(defun javascript/init-js-doc ()
   (use-package js-doc
     :defer t
-    :init (spacemacs/js-doc-set-key-bindings 'js2-mode)))
+    :init (spacemacs/javascript-doc-set-key-bindings 'js2-mode)))
 
-(defun js/init-js2-mode ()
+(defun javascript/init-js2-mode ()
   (use-package js2-mode
     :defer t
     :mode (("\\.m?js\\'"  . js2-mode))
     :init
     (progn
-      (add-hook 'js2-mode-local-vars-hook #'spacemacs//js-setup-backend)
-      (add-hook 'js2-mode-local-vars-hook #'spacemacs//js-setup-next-erro-fn)
+      (add-hook 'js2-mode-local-vars-hook #'spacemacs//javascript-setup-backend)
+      (add-hook 'js2-mode-local-vars-hook #'spacemacs//javascript-setup-next-erro-fn)
 
       ;; (setq-local next-error-function nil)
       ;; safe values for backend to be used in directory file variables
@@ -88,15 +88,15 @@
         "zF" 'js2-mode-toggle-hide-functions
         "zC" 'js2-mode-toggle-hide-comments))))
 
-;; (defun js/post-init-js2-mode ()
+;; (defun javascript/post-init-js2-mode ()
 ;;   (setq-local next-error-function nil))
 
-(defun js/init-js2-refactor ()
+(defun javascript/init-js2-refactor ()
   (use-package js2-refactor
     :defer t
     :init
     (progn
-      (add-hook 'js2-mode-hook 'spacemacs/js2-refactor-require)
+      (add-hook 'js2-mode-hook 'spacemacs/javascript2-refactor-require)
       ;; prefixes
       (spacemacs/declare-prefix-for-mode 'js2-mode "mr3" "ternary")
       (spacemacs/declare-prefix-for-mode 'js2-mode "mra" "add/args")
@@ -146,7 +146,7 @@
         "xmj" 'js2r-move-line-down
         "xmk" 'js2r-move-line-up))))
 
-(defun js/init-livid-mode ()
+(defun javascript/init-livid-mode ()
   (use-package livid-mode
     :defer t
     :init
@@ -157,11 +157,11 @@
         :evil-leader-for-mode (js2-mode . "Tl"))
       (spacemacs|diminish livid-mode " 🅻" " [l]"))))
 
-(defun js/pre-init-prettier-js ()
+(defun javascript/pre-init-prettier-js ()
   (if (eq javascript-fmt-tool 'prettier)
       (add-to-list 'spacemacs--prettier-modes 'js2-mode)))
 
-(defun js/init-skewer-mode ()
+(defun javascript/init-skewer-mode ()
   (use-package skewer-mode
     :defer t
     :init
@@ -188,7 +188,7 @@
         "sR" 'spacemacs/skewer-eval-region-and-focus
         "ss" 'skewer-repl))))
 
-(defun js/pre-init-web-beautify ()
+(defun javascript/pre-init-web-beautify ()
   (if (eq javascript-fmt-tool 'web-beautify)
       (add-to-list 'spacemacs--web-beautify-modes
                    (cons 'js2-mode 'web-beautify-js))))

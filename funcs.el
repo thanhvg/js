@@ -12,24 +12,24 @@
 
 ;; backend
 
-(defun spacemacs//js-setup-backend ()
+(defun spacemacs//javascript-setup-backend ()
   "Conditionally setup javascript backend."
   (pcase javascript-backend
-    (`dumb (spacemacs//js-setup-dumb))
-    (`lsp (spacemacs//js-setup-lsp))))
+    (`dumb (spacemacs//javascript-setup-dumb))
+    (`lsp (spacemacs//javascript-setup-lsp))))
 
-(defun spacemacs//js-setup-company ()
+(defun spacemacs//javascript-setup-company ()
   "Conditionally setup company based on backend."
   (pcase javascript-backend
-    (`dumb (spacemacs//js-setup-dumb-company))
-    (`lsp (spacemacs//js-setup-lsp-company))))
+    (`dumb (spacemacs//javascript-setup-dumb-company))
+    (`lsp (spacemacs//javascript-setup-lsp-company))))
 
-(defun spacemacs//js-setup-next-erro-fn ()
+(defun spacemacs//javascript-setup-next-erro-fn ()
   (setq-local next-error-function nil))
 
 ;; lsp
 
-(defun spacemacs//js-setup-lsp ()
+(defun spacemacs//javascript-setup-lsp ()
   "Setup lsp backend."
   (if (configuration-layer/layer-used-p 'lsp)
       (progn
@@ -38,7 +38,7 @@
     (message (concat "`lsp' layer is not installed, "
                      "please add `lsp' layer to your dotfile."))))
 
-(defun spacemacs//js-setup-lsp-company ()
+(defun spacemacs//javascript-setup-lsp-company ()
   "Setup lsp auto-completion."
   (if (configuration-layer/layer-used-p 'lsp)
       (progn
@@ -54,21 +54,21 @@
 
 
 ;; dumb
-(defun spacemacs//js-setup-dumb ()
+(defun spacemacs//javascript-setup-dumb ()
   (add-to-list 'spacemacs-jump-handlers-js2-mode 'dumb-jump-go))
 
-(defun spacemacs//js-setup-dumb-company ()
+(defun spacemacs//javascript-setup-dumb-company ()
   (spacemacs|add-company-backends :backends company-capf :modes js2-mode))
 
 
 ;; js-doc
 
-(defun spacemacs/js-doc-require ()
+(defun spacemacs/javascript-doc-require ()
   "Lazy load js-doc"
   (require 'js-doc))
-(add-hook 'js2-mode-hook 'spacemacs/js-doc-require)
+(add-hook 'js2-mode-hook 'spacemacs/javascript-doc-require)
 
-(defun spacemacs/js-doc-set-key-bindings (mode)
+(defun spacemacs/javascript-doc-set-key-bindings (mode)
   "Setup the key bindings for `js2-doc' for the given MODE."
   (spacemacs/declare-prefix-for-mode mode "mrd" "documentation")
   (spacemacs/set-leader-keys-for-major-mode mode
@@ -81,7 +81,7 @@
 
 ;; js-refactor
 
-(defun spacemacs/js2-refactor-require ()
+(defun spacemacs/javascript2-refactor-require ()
   "Lazy load js2-refactor"
   (require 'js2-refactor))
 
