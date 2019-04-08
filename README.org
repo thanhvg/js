@@ -25,6 +25,7 @@
   - [[#repl-skewer-mode][REPL (skewer-mode)]]
 
 * Description
+Forked from spacemacs dev branch, to meet my needs, dropped tern backend
 This layer adds support for the JavaScript language using [[https://github.com/mooz/js2-mode][js2-mode]].
 
 ** Features:

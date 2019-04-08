@@ -9,15 +9,12 @@
 ;;
 ;;; License: GPLv3
 
-(setq javascript-packages
+(setq js-packages
       '(
         add-node-modules-path
         company
-        counsel-gtags
         evil-matchit
         flycheck
-        ggtags
-        helm-gtags
         imenu
         impatient-mode
         js-doc
@@ -27,58 +24,51 @@
         org
         prettier-js
         skewer-mode
-        tern
         web-beautify
         ))
 
-(defun javascript/post-init-add-node-modules-path ()
+(defun js/post-init-add-node-modules-path ()
   (spacemacs/add-to-hooks #'add-node-modules-path '(css-mode-hook
                                              js2-mode-hook)))
 
-(defun javascript/post-init-counsel-gtags ()
-  (spacemacs/counsel-gtags-define-keys-for-mode 'js2-mode))
-
-(defun javascript/post-init-evil-matchit ()
+(defun js/post-init-evil-matchit ()
   (add-hook `js2-mode-hook `turn-on-evil-matchit-mode))
 
-(defun javascript/post-init-company ()
-  (add-hook 'js2-mode-local-vars-hook #'spacemacs//javascript-setup-company))
+(defun js/post-init-company ()
+  (add-hook 'js2-mode-local-vars-hook #'spacemacs//js-setup-company))
 
-(defun javascript/post-init-flycheck ()
+(defun js/post-init-flycheck ()
   (spacemacs/enable-flycheck 'js2-mode))
 
-(defun javascript/post-init-ggtags ()
-  (add-hook 'js2-mode-local-vars-hook #'spacemacs/ggtags-mode-enable))
-
-(defun javascript/post-init-helm-gtags ()
-  (spacemacs/helm-gtags-define-keys-for-mode 'js2-mode))
-
-(defun javascript/post-init-imenu ()
+(defun js/post-init-imenu ()
   ;; Required to make imenu functions work correctly
   (add-hook 'js2-mode-hook 'js2-imenu-extras-mode))
 
-(defun javascript/post-init-impatient-mode ()
+(defun js/post-init-impatient-mode ()
   (spacemacs/set-leader-keys-for-major-mode 'js2-mode
     "i" 'spacemacs/impatient-mode))
 
-(defun javascript/pre-init-org ()
+(defun js/pre-init-org ()
   (spacemacs|use-package-add-hook org
     :post-config (add-to-list 'org-babel-load-languages '(js . t))))
 
-(defun javascript/init-js-doc ()
+(defun js/init-js-doc ()
   (use-package js-doc
     :defer t
     :init (spacemacs/js-doc-set-key-bindings 'js2-mode)))
 
-(defun javascript/init-js2-mode ()
+(defun js/init-js2-mode ()
   (use-package js2-mode
     :defer t
     :mode (("\\.m?js\\'"  . js2-mode))
     :init
     (progn
-      (add-hook 'js2-mode-local-vars-hook #'spacemacs//javascript-setup-backend)
+      (add-hook 'js2-mode-local-vars-hook #'spacemacs//js-setup-backend)
+      (add-hook 'js2-mode-local-vars-hook #'spacemacs//js-setup-next-error-fn)
+
+      ;; (setq-local next-error-function nil)
       ;; safe values for backend to be used in directory file variables
-      (dolist (value '(lsp tern))
+      (dolist (value '(lsp dumb))
         (add-to-list 'safe-local-variable-values
                      (cons 'javascript-backend value))))
     :config
@@ -98,7 +88,10 @@
         "zF" 'js2-mode-toggle-hide-functions
         "zC" 'js2-mode-toggle-hide-comments))))
 
-(defun javascript/init-js2-refactor ()
+;; (defun js/post-init-js2-mode ()
+;;   (setq-local next-error-function nil))
+
+(defun js/init-js2-refactor ()
   (use-package js2-refactor
     :defer t
     :init
@@ -153,7 +146,7 @@
         "xmj" 'js2r-move-line-down
         "xmk" 'js2r-move-line-up))))
 
-(defun javascript/init-livid-mode ()
+(defun js/init-livid-mode ()
   (use-package livid-mode
     :defer t
     :init
@@ -164,11 +157,11 @@
         :evil-leader-for-mode (js2-mode . "Tl"))
       (spacemacs|diminish livid-mode " 🅻" " [l]"))))
 
-(defun javascript/pre-init-prettier-js ()
+(defun js/pre-init-prettier-js ()
   (if (eq javascript-fmt-tool 'prettier)
       (add-to-list 'spacemacs--prettier-modes 'js2-mode)))
 
-(defun javascript/init-skewer-mode ()
+(defun js/init-skewer-mode ()
   (use-package skewer-mode
     :defer t
     :init
@@ -195,10 +188,7 @@
         "sR" 'spacemacs/skewer-eval-region-and-focus
         "ss" 'skewer-repl))))
 
-(defun javascript/post-init-tern ()
-  (add-to-list 'tern--key-bindings-modes 'js2-mode))
-
-(defun javascript/pre-init-web-beautify ()
+(defun js/pre-init-web-beautify ()
   (if (eq javascript-fmt-tool 'web-beautify)
       (add-to-list 'spacemacs--web-beautify-modes
                    (cons 'js2-mode 'web-beautify-js))))

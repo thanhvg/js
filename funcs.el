@@ -12,30 +12,35 @@
 
 ;; backend
 
-(defun spacemacs//javascript-setup-backend ()
+(defun spacemacs//js-setup-backend ()
   "Conditionally setup javascript backend."
   (pcase javascript-backend
-    (`tern (spacemacs//javascript-setup-tern))
-    (`lsp (spacemacs//javascript-setup-lsp))))
+    (`dumb (spacemacs//js-setup-dumb))
+    (`lsp (spacemacs//js-setup-lsp))))
 
-(defun spacemacs//javascript-setup-company ()
+(defun spacemacs//js-setup-company ()
   "Conditionally setup company based on backend."
   (pcase javascript-backend
-    (`tern (spacemacs//javascript-setup-tern-company))
-    (`lsp (spacemacs//javascript-setup-lsp-company))))
+    (`dumb (spacemacs//js-setup-dumb-company))
+    (`lsp (spacemacs//js-setup-lsp-company))))
 
+(defun spacemacs//js-setup-next-error-fn ()
+  (setq-local next-error-function nil))
 
 ;; lsp
 
-(defun spacemacs//javascript-setup-lsp ()
+(defun spacemacs//js-setup-lsp ()
   "Setup lsp backend."
   (if (configuration-layer/layer-used-p 'lsp)
       (progn
+        ;; error checking from lsp langserver sucks, turn it off
+        (setq-local lsp-prefer-flymake :none)
         (lsp))
+        ;; (flycheck-select-checker 'javascript-eslint))
     (message (concat "`lsp' layer is not installed, "
                      "please add `lsp' layer to your dotfile."))))
 
-(defun spacemacs//javascript-setup-lsp-company ()
+(defun spacemacs//js-setup-lsp-company ()
   "Setup lsp auto-completion."
   (if (configuration-layer/layer-used-p 'lsp)
       (progn
@@ -50,20 +55,12 @@
                      "please add `lsp' layer to your dotfile."))))
 
 
-;; tern
-(defun spacemacs//javascript-setup-tern ()
-  (if (configuration-layer/layer-used-p 'tern)
-      (when (locate-file "tern" exec-path)
-        (spacemacs/tern-setup-tern))
-    (message (concat "Tern was configured as the javascript backend but "
-                     "the `tern' layer is not present in your `.spacemacs'!"))))
+;; dumb
+(defun spacemacs//js-setup-dumb ()
+  (add-to-list 'spacemacs-jump-handlers-js2-mode 'dumb-jump-go))
 
-(defun spacemacs//javascript-setup-tern-company ()
-  (if (configuration-layer/layer-used-p 'tern)
-      (when (locate-file "tern" exec-path)
-        (spacemacs/tern-setup-tern-company 'js2-mode))
-    (message (concat "Tern was configured as the javascript backend but "
-                     "the `tern' layer is not present in your `.spacemacs'!"))))
+(defun spacemacs//js-setup-dumb-company ()
+  (spacemacs|add-company-backends :backends company-capf :modes js2-mode))
 
 
 ;; js-doc
