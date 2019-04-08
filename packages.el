@@ -49,7 +49,7 @@
   (spacemacs/set-leader-keys-for-major-mode 'js2-mode
     "I" 'spacemacs/impatient-mode))
 
-(defun javascript/init-import-js ()
+(defun js/init-import-js ()
   (use-package import-js
     :defer t
     :init
