@@ -26,8 +26,12 @@
   - [[#repl-skewer-mode][REPL (skewer-mode)]]
 
 * Description
-Forked from spacemacs dev branch, to meet my needs, dropped tern backend
-This layer adds support for the JavaScript language using [[https://github.com/mooz/js2-mode][js2-mode]].
+Forked from spacemacs dev branch, to meet my needs, dropped tern backend, add
+`dumb` backend
+
+The upstream branch is javascript layer from spacemacs dev branch master is a my
+change and combined with upstream. namespace in master change from javascript to
+js This layer adds support for the JavaScript language using [[https://github.com/mooz/js2-mode][js2-mode]].
 
 ** Features:
 - Multiple backends support: Tern and LSP
